@@ -19,6 +19,7 @@ import org.mockito.MockitoAnnotations;
 import com.jerosanchez.pms_patient_service.dto.PatientResponseDTO;
 import com.jerosanchez.pms_patient_service.model.Patient;
 import com.jerosanchez.pms_patient_service.repository.PatientRepository;
+import com.jerosanchez.pms_patient_service.test_helpers.PatientAssertions;
 import com.jerosanchez.pms_patient_service.test_helpers.PatientTestFactory;
 
 class PatientServiceTest {
@@ -49,8 +50,8 @@ class PatientServiceTest {
         verify(patientRepository, times(1)).findAll();
 
         assertEquals(2, result.size());
-        assertPatientsEqual(patient1, result.get(0));
-        assertPatientsEqual(patient2, result.get(1));
+        PatientAssertions.assertEqual(patient1, result.get(0));
+        PatientAssertions.assertEqual(patient2, result.get(1));
     }
 
     @Test
@@ -66,15 +67,6 @@ class PatientServiceTest {
 
         assertNotNull(result);
         assertTrue(result.isEmpty());
-    }
-
-    private void assertPatientsEqual(Patient expected, PatientResponseDTO actual) {
-        assertEquals(expected.getId().toString(), actual.id(), "Patient id");
-        assertEquals(expected.getName(), actual.name(), "Patient name");
-        assertEquals(expected.getEmail(), actual.email(), "Patient email");
-        assertEquals(expected.getAddress(), actual.address(), "Patient address");
-        assertEquals(expected.getDateOfBirth().toString(), actual.dateOfBirth(), "Patient dateOfBirth");
-        assertEquals(expected.getRegisteredDate().toString(), actual.registeredDate(), "Patient registeredDate");
     }
 
 }

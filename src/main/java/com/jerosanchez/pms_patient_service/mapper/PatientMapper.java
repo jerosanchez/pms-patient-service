@@ -10,7 +10,6 @@ public class PatientMapper {
                 model.getName(),
                 model.getEmail(),
                 model.getAddress(),
-                model.getDateOfBirth().toString(),
-                model.getRegisteredDate().toString());
+                model.getDateOfBirth().toString());
     }
 }
