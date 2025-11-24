@@ -10,10 +10,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Builder
+@NoArgsConstructor
+@Setter
+@Getter
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
