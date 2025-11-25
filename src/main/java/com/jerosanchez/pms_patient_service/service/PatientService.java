@@ -6,16 +6,18 @@ import org.springframework.stereotype.Service;
 
 import com.jerosanchez.pms_patient_service.dto.PatientRequestDTO;
 import com.jerosanchez.pms_patient_service.dto.PatientResponseDTO;
-import com.jerosanchez.pms_patient_service.exception.EmailAlreadyExistsException;
 import com.jerosanchez.pms_patient_service.mapper.PatientMapper;
+import com.jerosanchez.pms_patient_service.policy.EmailUniquenessPolicy;
 import com.jerosanchez.pms_patient_service.repository.PatientRepository;
 
 @Service
 public class PatientService {
     private final PatientRepository patientRepository;
+    private final EmailUniquenessPolicy emailUniquenessPolicy;
 
-    public PatientService(PatientRepository patientRepository) {
+    public PatientService(PatientRepository patientRepository, EmailUniquenessPolicy emailUniquenessPolicy) {
         this.patientRepository = patientRepository;
+        this.emailUniquenessPolicy = emailUniquenessPolicy;
     }
 
     public List<PatientResponseDTO> getPatients() {
@@ -29,11 +31,7 @@ public class PatientService {
     public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO) {
         var newPatient = PatientMapper.toModel(patientRequestDTO);
 
-        // An email address must be unique for each patient
-        if (patientRepository.existsByEmail(newPatient.getEmail())) {
-            throw new EmailAlreadyExistsException(
-                    "A patient with the given email already exists: " + newPatient.getEmail());
-        }
+        emailUniquenessPolicy.enforce(newPatient.getEmail());
 
         var savedPatient = patientRepository.save(newPatient);
 
