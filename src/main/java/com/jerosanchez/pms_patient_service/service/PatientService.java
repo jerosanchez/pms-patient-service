@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.jerosanchez.pms_patient_service.dto.PatientRequestDTO;
 import com.jerosanchez.pms_patient_service.dto.PatientResponseDTO;
+import com.jerosanchez.pms_patient_service.exception.EmailAlreadyExistsException;
 import com.jerosanchez.pms_patient_service.mapper.PatientMapper;
 import com.jerosanchez.pms_patient_service.repository.PatientRepository;
 
@@ -28,8 +29,12 @@ public class PatientService {
     public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO) {
         var newPatient = PatientMapper.toModel(patientRequestDTO);
 
-        @SuppressWarnings("null")
-        // Using default save method, which always returns the saved entity
+        // An email address must be unique for each patient
+        if (patientRepository.existsByEmail(newPatient.getEmail())) {
+            throw new EmailAlreadyExistsException(
+                    "A patient with the given email already exists: " + newPatient.getEmail());
+        }
+
         var savedPatient = patientRepository.save(newPatient);
 
         return PatientMapper.toDTO(savedPatient);
