@@ -2,6 +2,8 @@ package com.jerosanchez.pms_patient_service.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.jerosanchez.pms_patient_service.dto.PatientRequestDTO;
@@ -12,6 +14,7 @@ import com.jerosanchez.pms_patient_service.repository.PatientRepository;
 
 @Service
 public class PatientService {
+    private static final Logger logger = LoggerFactory.getLogger(PatientService.class);
     private final PatientRepository patientRepository;
     private final EmailUniquenessPolicy emailUniquenessPolicy;
 
@@ -35,6 +38,8 @@ public class PatientService {
 
         var savedPatient = patientRepository.save(newPatient);
 
+        logger.info("Patient created successfully: id={}, email={}",
+                savedPatient.getId(), savedPatient.getEmail());
         return PatientMapper.toDTO(savedPatient);
     }
 }
