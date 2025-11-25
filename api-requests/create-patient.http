@@ -1,0 +1,83 @@
+### Happy Path (Valid Request)
+POST http://localhost:8080/api/patients
+Content-Type: application/json
+
+{
+	"name": "Carlos Rivera",
+	"email": "carlos.rivera@example.com",
+	"address": "123 Main St, Springfield",
+	"dateOfBirth": "1990-01-01",
+	"registeredDate": "2025-11-25"
+}
+
+### Sad Path: Name is blank
+POST http://localhost:8080/api/patients
+Content-Type: application/json
+
+{
+	"name": "",
+	"email": "carlos.rivera@example.com",
+	"address": "123 Main St, Springfield",
+	"dateOfBirth": "1990-01-01",
+	"registeredDate": "2025-11-25"
+}
+
+### Sad Path: Name exceeds 100 characters
+POST http://localhost:8080/api/patients
+Content-Type: application/json
+
+{
+	"name": "A very long name that exceeds the maximum allowed length of one hundred characters. This should trigger a validation error.",
+	"email": "carlos.rivera@example.com",
+	"address": "123 Main St, Springfield",
+	"dateOfBirth": "1990-01-01",
+	"registeredDate": "2025-11-25"
+}
+
+### Sad Path: Invalid email format
+POST http://localhost:8080/api/patients
+Content-Type: application/json
+
+{
+	"name": "Carlos Rivera",
+	"email": "not-an-email",
+	"address": "123 Main St, Springfield",
+	"dateOfBirth": "1990-01-01",
+	"registeredDate": "2025-11-25"
+}
+
+### Sad Path: Address is blank
+POST http://localhost:8080/api/patients
+Content-Type: application/json
+
+{
+	"name": "Carlos Rivera",
+	"email": "carlos.rivera@example.com",
+	"address": "",
+	"dateOfBirth": "1990-01-01",
+	"registeredDate": "2025-11-25"
+}
+
+### Sad Path: Date of birth is blank
+POST http://localhost:8080/api/patients
+Content-Type: application/json
+
+{
+	"name": "Carlos Rivera",
+	"email": "carlos.rivera@example.com",
+	"address": "123 Main St, Springfield",
+	"dateOfBirth": "",
+	"registeredDate": "2025-11-25"
+}
+
+### Sad Path: Registered date is blank
+POST http://localhost:8080/api/patients
+Content-Type: application/json
+
+{
+	"name": "Carlos Rivera",
+	"email": "carlos.rivera@example.com",
+	"address": "123 Main St, Springfield",
+	"dateOfBirth": "1990-01-01",
+	"registeredDate": ""
+}

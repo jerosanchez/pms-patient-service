@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.jerosanchez.pms_patient_service.dto.PatientRequestDTO;
 import com.jerosanchez.pms_patient_service.dto.PatientResponseDTO;
 import com.jerosanchez.pms_patient_service.mapper.PatientMapper;
 import com.jerosanchez.pms_patient_service.repository.PatientRepository;
@@ -22,5 +23,15 @@ public class PatientService {
         return patients.stream()
                 .map(PatientMapper::toDTO)
                 .toList();
+    }
+
+    public PatientResponseDTO createPatient(PatientRequestDTO patientRequestDTO) {
+        var newPatient = PatientMapper.toModel(patientRequestDTO);
+
+        @SuppressWarnings("null")
+        // Using default save method, which always returns the saved entity
+        var savedPatient = patientRepository.save(newPatient);
+
+        return PatientMapper.toDTO(savedPatient);
     }
 }
