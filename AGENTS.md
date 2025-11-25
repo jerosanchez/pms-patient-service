@@ -16,3 +16,4 @@
 * Add new tests below the existing ones.
 * In the assert section of each test, separate `assert` instructions (first) from `verify` instructions (last) with a blank line.
 * In each test method, clearly separate the Arrange, Act, and Assert sections using comments; keep verification instructions as part of the Assert section.
+* Use `@SuppressWarnings("null")` where relevant to avoid Mockito's null type safety warnings.

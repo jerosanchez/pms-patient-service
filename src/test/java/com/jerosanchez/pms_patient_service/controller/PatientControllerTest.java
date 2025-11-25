@@ -29,6 +29,7 @@ import com.jerosanchez.pms_patient_service.test_helpers.PatientAssertions;
 import com.jerosanchez.pms_patient_service.test_helpers.PatientTestFactory;
 
 class PatientControllerTest {
+
     @Mock
     private PatientService patientService;
 
@@ -39,6 +40,8 @@ class PatientControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+
+    // --- Get Patients Tests ---
 
     @Test
     void getPatients_returnsListAndOk() {
@@ -61,7 +64,7 @@ class PatientControllerTest {
     }
 
     @Test
-    void getPatients_returnsEmptyList() {
+    void getPatients_returnsEmptyListAndOk() {
         // Arrange
         when(patientService.getPatients()).thenReturn(List.of());
 
@@ -79,7 +82,8 @@ class PatientControllerTest {
         verify(patientService, times(1)).getPatients();
     }
 
-    @Test
+    // --- Create Patient Tests ---
+
     void createPatient_returnsCreatedPatientAndOk() {
         // Arrange
         Patient model = PatientTestFactory.createRandomPatient();
@@ -114,7 +118,32 @@ class PatientControllerTest {
         verify(patientService, times(1)).createPatient(request);
     }
 
+    // --- Update Patient Tests ---
+
+    @Test
+    void updatePatient_returnsUpdatedPatientAndOk() {
+        // Arrange
+        Patient model = PatientTestFactory.createRandomPatient();
+
+        // No need to update fields, we are only testing the controller layer
+        PatientRequestDTO request = DtoTestFactory.toRequestDTO(model);
+        PatientResponseDTO responseDTO = PatientMapper.toDTO(model);
+
+        when(patientService.updatePatient(model.getId(), request)).thenReturn(responseDTO);
+
+        // Act
+        ResponseEntity<PatientResponseDTO> response = sut.updatePatient(model.getId(), request);
+
+        // Assert
+        assertEquals(HttpStatus.OK.value(), response.getStatusCode().value());
+        assertNotNull(response.getBody());
+        PatientAssertions.assertEqual(model, response.getBody());
+
+        verify(patientService, times(1)).updatePatient(model.getId(), request);
+    }
+
     // Helper methods
+
     private List<PatientResponseDTO> createRandomPatientResponseDTOList(int count) {
         List<PatientResponseDTO> dtos = new java.util.ArrayList<>();
         for (int i = 0; i < count; i++) {
