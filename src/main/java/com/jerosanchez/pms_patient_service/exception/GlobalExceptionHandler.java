@@ -31,4 +31,13 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error); // 409 Conflict
     }
+
+    @ExceptionHandler(PatientNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handlePatientNotFoundException(PatientNotFoundException ex) {
+        var error = new HashMap<String, String>();
+
+        error.put("message", "Patient not found.");
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error); // 404 Not Found
+    }
 }

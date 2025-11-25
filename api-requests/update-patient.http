@@ -1,0 +1,57 @@
+@existing_patient_id=123e4567-e89b-12d3-a456-426614174000
+@existing_email_of_another_patient=emily.davis@example.com
+
+### Happy Path: Update Patient Successfully
+PUT http://localhost:8080/api/patients/{{existing_patient_id}}
+Content-Type: application/json
+
+{
+	"name": "Updated Name",
+	"email": "updated.email@example.com",
+	"address": "123 Updated St, City",
+	"dateOfBirth": "1990-01-01"
+}
+
+### Sad Path: Patient Not Found
+PUT http://localhost:8080/api/patients/00000000-0000-0000-0000-000000000000
+Content-Type: application/json
+
+{
+	"name": "Someone",
+	"email": "someone@example.com",
+	"address": "No Address",
+	"dateOfBirth": "1980-01-01"
+}
+
+### Sad Path: Email Not Unique
+PUT http://localhost:8080/api/patients/{{existing_patient_id}}
+Content-Type: application/json
+
+{
+	"name": "Another Name",
+	"email": "{{existing_email_of_another_patient}}",
+	"address": "456 Another St, City",
+	"dateOfBirth": "1992-02-02"
+}
+
+### Sad Path: Invalid Patient ID (null/empty/invalid UUID)
+PUT http://localhost:8080/api/patients/invalid-uuid
+Content-Type: application/json
+
+{
+	"name": "Invalid UUID",
+	"email": "invalid.uuid@example.com",
+	"address": "789 Invalid St, City",
+	"dateOfBirth": "1995-03-03"
+}
+
+### Sad Path: Missing Required Fields
+PUT http://localhost:8080/api/patients/{{existing_patient_id}}
+Content-Type: application/json
+
+{
+	"name": "",
+	"email": "",
+	"address": "",
+	"dateOfBirth": ""
+}
