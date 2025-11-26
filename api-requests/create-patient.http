@@ -3,7 +3,7 @@ POST http://localhost:8080/api/patients
 Content-Type: application/json
 
 {
-	"name": "Carlos Rivera",
+	"name": "Carlos Rivera2",
 	"email": "carlos.rivera@example.com",
 	"address": "123 Main St, Springfield",
 	"dateOfBirth": "1990-01-01",

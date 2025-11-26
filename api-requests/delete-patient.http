@@ -1,0 +1,14 @@
+@existing_patient_id=123e4567-e89b-12d3-a456-426614174000
+@non_existent_patient_id=00000000-0000-0000-0000-000000000000
+
+### Happy Path: Delete existing patient
+DELETE http://localhost:8080/api/patients/{{existing_patient_id}}
+Accept: application/json
+
+### Happy Path: Delete non-existent patient
+DELETE http://localhost:8080/api/patients/{{non_existent_patient_id}}
+Accept: application/json
+
+### Sad Path: Delete with invalid UUID
+DELETE http://localhost:8080/api/patients/invalid-uuid
+Accept: application/json

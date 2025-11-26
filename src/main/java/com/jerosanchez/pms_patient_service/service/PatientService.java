@@ -70,4 +70,18 @@ public class PatientService {
                 updatedPatient.getDateOfBirth());
         return PatientMapper.toDTO(updatedPatient);
     }
+
+    public void deletePatient(UUID id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Patient ID cannot be null for update operation.");
+        }
+
+        if (!patientRepository.existsById(id)) {
+            return;
+        }
+
+        patientRepository.deleteById(id);
+
+        logger.info("Patient deleted successfully: id={}", id);
+    }
 }

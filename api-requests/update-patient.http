@@ -1,4 +1,5 @@
 @existing_patient_id=123e4567-e89b-12d3-a456-426614174000
+@non_existent_patient_id=00000000-0000-0000-0000-000000000000
 @existing_email_of_another_patient=emily.davis@example.com
 
 ### Happy Path: Update Patient Successfully
@@ -7,13 +8,13 @@ Content-Type: application/json
 
 {
 	"name": "Updated Name",
-	"email": "updated.email@example.com",
+	"email": "john.doe@example.com",
 	"address": "123 Updated St, City",
 	"dateOfBirth": "1990-01-01"
 }
 
 ### Sad Path: Patient Not Found
-PUT http://localhost:8080/api/patients/00000000-0000-0000-0000-000000000000
+PUT http://localhost:8080/api/patients/{{non_existent_patient_id}}
 Content-Type: application/json
 
 {

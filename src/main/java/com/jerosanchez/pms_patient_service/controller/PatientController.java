@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +34,7 @@ public class PatientController {
     public ResponseEntity<List<PatientResponseDTO>> getPatients() {
         var responseDTO = patientService.getPatients();
 
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.ok(responseDTO); // 200 OK
     }
 
     @PostMapping
@@ -42,7 +43,7 @@ public class PatientController {
                     CreatePatientValidationGroup.class }) @RequestBody PatientRequestDTO requestDTO) {
         var responseDTO = patientService.createPatient(requestDTO);
 
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.ok(responseDTO); // 200 OK
     }
 
     @PutMapping("/{id}")
@@ -51,7 +52,13 @@ public class PatientController {
             @Validated({ Default.class }) @RequestBody PatientRequestDTO requestDTO) {
         var responseDTO = patientService.updatePatient(id, requestDTO);
 
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.ok(responseDTO); // 200 OK
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePatient(@PathVariable UUID id) {
+        patientService.deletePatient(id);
+
+        return ResponseEntity.noContent().build(); // 204 No Content
+    }
 }
