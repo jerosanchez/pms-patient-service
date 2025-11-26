@@ -4,11 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -140,6 +142,35 @@ class PatientControllerTest {
         PatientAssertions.assertEqual(model, response.getBody());
 
         verify(patientService, times(1)).updatePatient(model.getId(), request);
+    }
+
+    // --- Delete Patient Tests ---
+
+    @Test
+    void deletePatient_returnsNoContent() {
+        // Arrange
+        UUID id = UUID.randomUUID();
+
+        // Act
+        ResponseEntity<Void> response = sut.deletePatient(id);
+
+        // Assert
+        assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatusCode().value());
+
+        verify(patientService, times(1)).deletePatient(id);
+    }
+
+    @Test
+    void deletePatient_whenServiceThrowsIllegalArgumentException_returnsException() {
+        // Arrange
+        UUID id = null;
+        doThrow(new IllegalArgumentException("Patient ID cannot be null for update operation.")).when(patientService)
+                .deletePatient(id);
+
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> sut.deletePatient(id));
+
+        verify(patientService, times(1)).deletePatient(id);
     }
 
     // Helper methods

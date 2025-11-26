@@ -220,4 +220,47 @@ class PatientServiceTest {
         verify(patientRepository, times(0)).findById(ArgumentMatchers.<UUID>any());
         verify(patientRepository, times(0)).save(ArgumentMatchers.<Patient>any());
     }
+
+    // --- Delete Patient Tests ---
+
+    @Test
+    @SuppressWarnings("null")
+    void deletePatient_successful() {
+        // Arrange
+        UUID id = UUID.randomUUID();
+        when(patientRepository.existsById(id)).thenReturn(true);
+
+        // Act
+        sut.deletePatient(id);
+
+        // Assert
+        verify(patientRepository, times(1)).existsById(id);
+        verify(patientRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    @SuppressWarnings("null")
+    void deletePatient_doesNothingWhenNotExists() {
+        // Arrange
+        UUID id = UUID.randomUUID();
+        when(patientRepository.existsById(id)).thenReturn(false);
+
+        // Act
+        sut.deletePatient(id);
+
+        // Assert
+        verify(patientRepository, times(1)).existsById(id);
+        verify(patientRepository, times(0)).deleteById(id);
+    }
+
+    @Test
+    @SuppressWarnings("null")
+    void deletePatient_throwsWhenIdIsNull() {
+        // Arrange
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> sut.deletePatient(null));
+
+        verify(patientRepository, times(0)).existsById(ArgumentMatchers.<UUID>any());
+        verify(patientRepository, times(0)).deleteById(ArgumentMatchers.<UUID>any());
+    }
 }

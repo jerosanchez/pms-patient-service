@@ -84,7 +84,8 @@ class PatientControllerWebTest {
     @SuppressWarnings("null")
     @DisplayName("POST /api/patients with valid data creates patient")
     void createPatient_valid_returnsCreated() throws Exception {
-        Patient model = com.jerosanchez.pms_patient_service.test_helpers.PatientTestFactory.createRandomPatient();
+        Patient model = com.jerosanchez.pms_patient_service.test_helpers.PatientTestFactory
+                .createRandomPatient();
         PatientRequestDTO request = DtoTestFactory.toRequestDTO(model);
         PatientResponseDTO response = PatientMapper.toDTO(model);
         when(patientService.createPatient(any(PatientRequestDTO.class))).thenReturn(response);
@@ -112,8 +113,10 @@ class PatientControllerWebTest {
     @SuppressWarnings("null")
     @DisplayName("POST /api/patients with duplicate email returns 409")
     void createPatient_duplicateEmail_returnsConflict() throws Exception {
-        Patient model = com.jerosanchez.pms_patient_service.test_helpers.PatientTestFactory.createRandomPatient();
-        PatientRequestDTO request = com.jerosanchez.pms_patient_service.test_helpers.DtoTestFactory.toRequestDTO(model);
+        Patient model = com.jerosanchez.pms_patient_service.test_helpers.PatientTestFactory
+                .createRandomPatient();
+        PatientRequestDTO request = com.jerosanchez.pms_patient_service.test_helpers.DtoTestFactory
+                .toRequestDTO(model);
         when(patientService.createPatient(any(PatientRequestDTO.class)))
                 .thenThrow(new EmailAlreadyExistsException("exists"));
 
@@ -129,7 +132,8 @@ class PatientControllerWebTest {
     @SuppressWarnings("null")
     @DisplayName("PUT /api/patients/{id} with valid data updates patient")
     void updatePatient_valid_returnsUpdated() throws Exception {
-        Patient model = com.jerosanchez.pms_patient_service.test_helpers.PatientTestFactory.createRandomPatient();
+        Patient model = com.jerosanchez.pms_patient_service.test_helpers.PatientTestFactory
+                .createRandomPatient();
         PatientRequestDTO request = DtoTestFactory.toRequestDTO(model);
         PatientResponseDTO response = PatientMapper.toDTO(model);
         UUID id = model.getId();
@@ -159,8 +163,10 @@ class PatientControllerWebTest {
     @SuppressWarnings("null")
     @DisplayName("PUT /api/patients/{id} when not found returns 404")
     void updatePatient_notFound_returnsNotFound() throws Exception {
-        Patient model = com.jerosanchez.pms_patient_service.test_helpers.PatientTestFactory.createRandomPatient();
-        PatientRequestDTO request = com.jerosanchez.pms_patient_service.test_helpers.DtoTestFactory.toRequestDTO(model);
+        Patient model = com.jerosanchez.pms_patient_service.test_helpers.PatientTestFactory
+                .createRandomPatient();
+        PatientRequestDTO request = com.jerosanchez.pms_patient_service.test_helpers.DtoTestFactory
+                .toRequestDTO(model);
         UUID id = model.getId();
         when(patientService.updatePatient(eq(id), any(PatientRequestDTO.class)))
                 .thenThrow(new PatientNotFoundException("not found"));
@@ -169,5 +175,44 @@ class PatientControllerWebTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isNotFound());
+    }
+
+    // --- Delete Patient Tests ---
+
+    @Test
+    @DisplayName("DELETE /api/patients/{id} with valid id returns 204")
+    void deletePatient_valid_returnsNoContent() throws Exception {
+        UUID id = UUID.randomUUID();
+
+        // No need to stub patientService.deletePatient for void success
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .delete("/api/patients/" + id))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("DELETE /api/patients/{id} when not found returns 204")
+    void deletePatient_notFound_returnsNoContent() throws Exception {
+        UUID id = UUID.randomUUID();
+        // Service returns void even if not found, so no need to stub
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .delete("/api/patients/" + id))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("DELETE /api/patients/{id} with null id returns 400")
+    void deletePatient_nullId_returnsBadRequest() throws Exception {
+        // Simulate service throwing IllegalArgumentException for null/invalid id
+        UUID id = null;
+        org.mockito.Mockito
+                .doThrow(new IllegalArgumentException(
+                        "Patient ID cannot be null for update operation."))
+                .when(patientService).deletePatient(id);
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+                .delete("/api/patients/null"))
+                .andExpect(status().isBadRequest());
     }
 }
