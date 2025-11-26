@@ -17,3 +17,15 @@
 * In the assert section of each test, separate `assert` instructions (first) from `verify` instructions (last) with a blank line.
 * In each test method, clearly separate the Arrange, Act, and Assert sections using comments; keep verification instructions as part of the Assert section.
 * Use `@SuppressWarnings("null")` only to avoid Mockito's null type safety warnings.
+
+## Makefile Authoring Guidelines
+
+* Always use a TAB character (not spaces) at the beginning of each recipe line (the lines that are executed as commands) in Makefiles. Using spaces will cause errors.
+* Use only spaces for indentation in variable definitions or comments, but never for recipe lines.
+* Each rule should have a target, a colon, and the recipe indented with a TAB.
+* Use `.PHONY` in the beginiing to declare phony targets (those that are not actual files).
+* Keep target names lowercase and hyphenated for readability (e.g., `integration-test`).
+* Group related targets together and add comments to explain non-obvious targets.
+* Avoid trailing whitespace at the end of lines.
+* When writing shell commands that use `$`, escape as `$$` in Makefiles.
+* Test Makefile changes on a clean environment to ensure compatibility.
