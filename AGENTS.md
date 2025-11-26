@@ -29,3 +29,12 @@
 * Avoid trailing whitespace at the end of lines.
 * When writing shell commands that use `$`, escape as `$$` in Makefiles.
 * Test Makefile changes on a clean environment to ensure compatibility.
+
+## .env File Modification Guidelines
+
+* Whenever you update the `.env` file, always update the `.env.example` file to match the structure and values, so new developers have a correct template.
+* Keep comments and variable order consistent between `.env` and `.env.example` for clarity.
+* Do not commit sensitive or production secrets to `.env.example`—use only safe defaults or placeholders.
+* Document the purpose of each variable with comments where necessary.
+* Review and clean up unused variables regularly to avoid confusion.
+* When adding new environment variables, ensure the application code and documentation are updated accordingly.
