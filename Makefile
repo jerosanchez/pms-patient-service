@@ -1,3 +1,8 @@
+ifneq (,$(wildcard .env))
+	include .env
+	export
+endif
+
 .PHONY: test integration-test coverage
 
 test:
@@ -8,5 +13,5 @@ integration-test:
 
 coverage:
 	@echo "Calculating code coverage..."
-	@./mvnw test jacoco:report > /dev/null 2>&1
-	@bash utils/jacoco-coverage.sh target/site/jacoco/jacoco.csv 80
+	@./mvnw jacoco:report > /dev/null 2>&1
+	@bash utils/jacoco-coverage.sh target/site/jacoco/jacoco.csv "${COVERAGE_TARGET}"
