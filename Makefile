@@ -3,15 +3,26 @@ ifneq (,$(wildcard .env))
 	export
 endif
 
-.PHONY: test integration-test coverage
+.PHONY: test integration-test coverage compose-up compose-down
 
+# Run all unit tests
 test:
 	./mvnw test
 
+# Run all integration tests
 integration-test:
 	./mvnw failsafe:integration-test failsafe:verify
 
+# Run code coverage analysis
 coverage:
 	@echo "Calculating code coverage..."
 	@./mvnw jacoco:report > /dev/null 2>&1
 	@bash utils/jacoco-coverage.sh target/site/jacoco/jacoco.csv "${COVERAGE_TARGET}"
+
+# Start the docker compose stack
+compose-up:
+	docker compose up -d
+
+# Stop the docker compose stack
+compose-down:
+	docker compose down
