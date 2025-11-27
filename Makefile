@@ -3,13 +3,20 @@ ifneq (,$(wildcard .env))
 	export
 endif
 
-.PHONY: test integration-test coverage lint compose-up compose-down
+.PHONY: lint test integration-test coverage build compose-up compose-down
 
-# Run all unit tests
+# Run linters
+lint:
+	@echo "Running docs linter..."
+	@markdownlint "**/*.md"
+	@echo "Running source code linter..."
+	@./mvnw checkstyle:check
+
+# Run unit tests
 test:
 	@./mvnw test
 
-# Run all integration tests
+# Run integration tests
 integration-test:
 	@./mvnw failsafe:integration-test failsafe:verify
 
@@ -19,12 +26,9 @@ coverage:
 	@./mvnw jacoco:report > /dev/null 2>&1
 	@bash utils/jacoco-coverage.sh target/site/jacoco/jacoco.csv "${COVERAGE_TARGET}"
 
-# Run all linters
-lint:
-	@echo "Running docs linter..."
-	@markdownlint "**/*.md"
-	@echo "Running source code linter..."
-	@./mvnw checkstyle:check
+# Build the project
+build:
+	@./mvnw clean package -DskipTests
 
 # Start the docker compose stack
 compose-up:
