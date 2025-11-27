@@ -1,5 +1,9 @@
+<!-- markdownlint-disable MD041 -->
+![CI/CD](https://github.com/jerosanchez/pms-patient-service/actions/workflows/ci-cd.yml/badge.svg)
+![Coverage](https://img.shields.io/badge/coverage-80%25-brightgreen)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-# Patient Management Service
+# README
 
 A sample production-grade Spring Boot RESTful API.
 
