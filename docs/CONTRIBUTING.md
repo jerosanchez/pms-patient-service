@@ -48,10 +48,21 @@ The project uses the Maven Wrapper (`./mvnw`). No extra installation is needed, 
 
 ## Getting Started
 
-1. **Fork the repository** and clone it locally.
-2. **Create a new branch** for your feature or bugfix.
-3. **Make your changes** and commit them with clear messages.
-4. **Push your branch** and open a Pull Request.
+1. Clone the repo and set up your `.env` file (see `.env.example`).
+
+2. Run sanity checks to verify code quality and test coverage:
+
+    ```sh
+    make lint test integration-test coverage
+    ```
+
+3. Start the stack:
+
+    ```sh
+    make compose-up
+    ```
+
+4. Access API docs at: [http://localhost:4000/swagger-ui.html](http://localhost:4000/swagger-ui.html)
 
 ---
 
@@ -76,7 +87,7 @@ This will check both Markdown and Java source files for style issues.
 
 ---
 
-## Development Workflow & Makefile Targets
+## Development Workflow
 
 The project provides a `Makefile` to simplify common development tasks:
 
