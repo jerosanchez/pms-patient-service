@@ -59,12 +59,12 @@ The project uses the Maven Wrapper (`./mvnw`). No extra installation is needed, 
 
 We use automated tools to ensure code quality and consistency:
 
-- **Java code** is linted using [Checkstyle](https://checkstyle.org/) with the official Google Java Style configuration (`google_checks.xml`).
-  - Exceptions to specific Java linting rules (such as `JavadocVariable`) can be configured in the `checkstyle-suppressions.xml` file at the project root. Add or adjust suppressions in this file to customize which rules are ignored during linting, while keeping the main style configuration intact.
+- **Java code** is linted using [Checkstyle](https://checkstyle.org/) with the official Google Java Style configuration. The configuration file is located at `.github/google_checks.xml`.
+  - Exceptions to specific Java linting rules (such as `JavadocVariable`) can be configured in the `.github/checkstyle-suppressions.xml` file. Add or adjust suppressions in this file to customize which rules are ignored during linting, while keeping the main style configuration intact.
   - The Java linter is configured to only fail the build on main issues (errors). It is acceptable to have warnings, such as indentation or import order, as these do not fail the build or block contributions.
 
-- **Markdown files** are linted using [`markdownlint-cli`](https://github.com/DavidAnson/markdownlint-cli`).
-  - Exceptions to specific linting rules (such as line length, MD013) can be configured in the `.markdownlint.json` file at the project root. Add or adjust rules in this file to customize linting behavior as needed.
+- **Markdown files** are linted using [`markdownlint-cli`](https://github.com/DavidAnson/markdownlint-cli).
+  - Exceptions to specific linting rules (such as line length, MD013) can be configured in the `.github/.markdownlint.json` file. Add or adjust rules in this file to customize linting behavior as needed.
 
 To lint the entire codebase, simply run:
 
@@ -84,6 +84,7 @@ The project provides a `Makefile` to simplify common development tasks:
 - `make test` — Run all unit tests
 - `make integration-test` — Run all integration tests
 - `make coverage` — Generate code coverage report
+- `make build` — Build the project JAR without running tests
 - `make compose-up` — Start the full Docker stack (database and app)
 - `make compose-down` — Stop the Docker stack
 

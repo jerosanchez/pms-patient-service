@@ -8,7 +8,7 @@ endif
 # Run linters
 lint:
 	@echo "Running docs linter..."
-	@markdownlint "**/*.md"
+	@markdownlint -c .github/.markdownlint.json "**/*.md"
 	@echo "Running source code linter..."
 	@./mvnw checkstyle:check
 

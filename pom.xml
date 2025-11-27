@@ -184,8 +184,8 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-					<configLocation>google_checks.xml</configLocation>
-					<suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
+					<configLocation>.github/google_checks.xml</configLocation>
+					<suppressionsLocation>.github/checkstyle-suppressions.xml</suppressionsLocation>
 					<consoleOutput>true</consoleOutput>
 					<failsOnError>true</failsOnError>
 					<usePluginClasspath>false</usePluginClasspath>
